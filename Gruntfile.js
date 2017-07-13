@@ -7,7 +7,8 @@ module.exports = function (grunt) {
   // Default task.
   grunt.registerTask('default', ['jshint','build']);
   grunt.registerTask('start', ['jshint', 'build', 'concurrent:target']);
-  grunt.registerTask('build', ['clean:public', 'jshint', 'concat:index']);
+  grunt.registerTask('build', ['clean:public', 'jshint', 'concat:index', 'concat:js', 'concat:css', 'vendor']);
+  grunt.registerTask('vendor', ['concat:vendorjs', 'concat:vendorcss']);
 
   // Project configuration.
   grunt.initConfig({
@@ -29,7 +30,6 @@ module.exports = function (grunt) {
     },
     src: {
       js: ['client/**/*.js'],
-      html: ['client/**/*.html'],
       css: ['client/**/*.css']
     },
     clean:{
@@ -43,9 +43,35 @@ module.exports = function (grunt) {
           process: true
         }
       },
+      js: {
+        src: [
+          '<%= src.js %>'
+        ],
+        dest: 'public/js/app.js',
+        options: {
+          process: true
+        }
+      },
+      css: {
+        src: [
+          '<%= src.css %>'
+        ],
+        dest: 'public/css/app.css',
+        options: {
+          process: true
+        }
+      },
+      vendorjs:{
+        src: [
+          'bower_components/jquery/dist/jquery.min.js',
+          'bower_components/mustache.js/mustache.min.js'
+        ],
+        dest: 'public/js/vendor.js'
+      },
       vendorcss:{
         src: [
           'bower_components/bootstrap-css-only/css/bootstrap.min.css',
+          'bower_components/bootstrap-css-only/css/bootstrap-theme.min.css'
         ],
         dest: 'public/css/vendor.css'
       }
@@ -64,11 +90,15 @@ module.exports = function (grunt) {
         eqnull:true,
         newcap:false,
         globals:{
-          "angular"  : true,
-          "console"  : true,
-          "require"  : true,
-          "module"  : true,
-          "document" : true
+          "$"              : true,
+          "App"            : true,
+          "TodoModel"      : true,
+          'TodoCreateView' : true,
+          "TodoListView"   : true,
+          "Mustache"       : true,
+          "console"        : true,
+          "window"         : true,
+          "document"       : true
         }
       }
     },
@@ -85,6 +115,14 @@ module.exports = function (grunt) {
     watch: {
       options: {
         livereload: true,
+      },
+      js: {
+        files: ['<%= src.js %>'],
+        tasks: ['jshint', 'concat:js']
+      },
+      css: {
+        files: ['<%= src.css %>'],
+        tasks: ['jshint', 'concat:css']
       },
       index: {
         files: ['client/index.html'],

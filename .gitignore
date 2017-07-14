@@ -3,3 +3,6 @@ bower_components
 coverage
 public
 db
+screenshots
+selenium-debug.log
+reports

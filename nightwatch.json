@@ -1,0 +1,43 @@
+{
+  "src_folders" : ["./tests"],
+  "output_folder" : "./reports",
+  "live_output" : true,
+  "parallel_process_delay" : 1500,
+
+  "custom_assertions_path": "e2e/custom-assertions",
+  "custom_commands_path": "e2e/custom-commands",
+
+  "selenium" : {
+    "start_process" : true,
+    "server_path" : "./node_modules/selenium-server-standalone-jar/jar/selenium-server-standalone-3.4.0.jar",
+    "log_path" : "",
+    "cli_args" : {
+      "webdriver.chrome.driver" : "/usr/local/bin/chromedriver"
+    }
+  },
+
+  "test_settings" : {
+    "default" : {
+      "launch_url" : "http://localhost",
+      "selenium_port"  : 4444,
+      "selenium_host"  : "localhost",
+      "silent" : false,
+      "screenshots" : {
+        "enabled" : true,
+        "path" : "./screenshots"
+      }
+    },
+
+    "chrome" : {
+      "desiredCapabilities" : {
+        "browserName" : "chrome",
+        "chromeOptions" : {
+          "args" : [
+            "use-fake-device-for-media-stream", 
+            "use-fake-ui-for-media-stream"
+          ]
+        }
+      }
+    }
+  }
+}
